@@ -9,6 +9,7 @@ RUN add-apt-repository ppa:ubuntu-toolchain-r/test -y
 
 # Update repos and pull in deps
 RUN apt-get update && apt-get install -y \
+    git \
     wget \
     curl \
     g++-4.9 \
