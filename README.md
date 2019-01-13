@@ -7,4 +7,4 @@ to muck up their PC.
 
 ## Usage
 
-Clone this repo, then run `sudo docker build .` to build the image
+Clone this repo, then run `sudo make` to build the image.
