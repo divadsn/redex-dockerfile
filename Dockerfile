@@ -1,6 +1,9 @@
 FROM ubuntu:trusty
 LABEL maintainer "Harsh Shandilya <msfjarvis@gmail.com>"
 
+# Set C++ compiler
+ENV CXX "g++-4.9"
+
 # Install software-properties-common
 RUN apt-get update && apt-get install software-properties-common -y
 
@@ -12,7 +15,7 @@ RUN apt-get update && apt-get install -y \
     git \
     wget \
     curl \
-    g++-4.9 \
+    $CXX \
     automake \
     autoconf \
     autoconf-archive \
@@ -27,17 +30,14 @@ RUN apt-get update && apt-get install -y \
     libjsoncpp-dev \
     aria2
 
-# Set C++ compiler
-RUN export CXX='g++-4.9'
-
-# Symlink g++-4.9 to /usr/bin/g++
-RUN ln -s /usr/bin/g++-4.9 /usr/bin/g++
+# Symlink current g++ to /usr/bin/g++
+RUN ln -s /usr/bin/$CXX /usr/bin/g++
 
 # Get the damn repo
 RUN rm -rf redex && git clone https://github.com/MSF-Jarvis/redex --single-branch --depth 1
 
 # Get the boost library && run ze bild
-RUN cd redex && ./get_boost.sh && autoreconf -ivf && ./configure CXX='g++-4.9' && make -j8
+RUN cd redex && ./get_boost.sh && autoreconf -ivf && ./configure CXX=$CXX && make -j8
 
 # At this point we're about ready to enter
 ENTRYPOINT [ "/bin/bash" ]
